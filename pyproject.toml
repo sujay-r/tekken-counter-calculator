@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tekken_counter"
+version = "0.1.0"
+description = "Tekken 8 counter calculator build pipeline"
+requires-python = ">=3.11"
+dependencies = [
+    "pydantic>=2.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "--cov=tekken_counter --cov-report=term-missing --cov-fail-under=80"
+
+[tool.coverage.run]
+source = ["src/tekken_counter"]
+omit = ["*/__main__.py"]
