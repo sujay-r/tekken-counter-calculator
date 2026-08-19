@@ -22,3 +22,7 @@ ENV/
 .DS_Store
 .idea/
 .vscode/
+
+# Spec files
+docs/
+specs/
