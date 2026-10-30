@@ -15,6 +15,7 @@ dependencies = [
 dev = [
     "pytest>=7.0",
     "pytest-cov>=4.0",
+    "pytest-timeout>=2.4.0",
 ]
 
 [tool.setuptools.packages.find]
@@ -23,6 +24,8 @@ where = ["src"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["src"]
+# Fail fast instead of hanging: generous for a cold full run, but bounded.
+timeout = 120
 addopts = "--cov=tekken_counter --cov-report=term-missing --cov-fail-under=80"
 
 [tool.coverage.run]
