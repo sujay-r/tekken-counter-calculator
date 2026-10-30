@@ -26,3 +26,8 @@ ENV/
 # Spec files
 docs/
 specs/
+
+# Frontend build artifacts
+node_modules/
+web/dist/
+web/dev-dist/
