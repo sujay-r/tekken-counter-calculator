@@ -11,6 +11,7 @@ from tekken_counter.normalize import (
     parse_block,
     parse_damage,
     parse_hit_levels,
+    parse_recovery,
     parse_startup,
     strip_wiki_markup,
 )
@@ -163,10 +164,27 @@ def test_clean_notes() -> None:
     assert clean_notes("[[Page|note]]") == "note"
 
 
+@pytest.mark.parametrize(
+    ("raw", "expected"),
+    [
+        ("r31", 31),
+        ("r31?", 31),
+        ("r24 FC", 24),
+        ("FC", None),
+        ("r", None),
+        ("", None),
+        (None, None),
+    ],
+)
+def test_parse_recovery(raw: str | None, expected: int | None) -> None:
+    assert parse_recovery(raw) == expected
+
+
 def test_b1_ch_launcher(steve_b1) -> None:
     """Hand-check from Scope Document §7."""
     assert steve_b1.input == "b+1"
-    assert steve_b1.startup == [StartupRange(min=13, max=13)]
+    # Rebaselined 2026-10-30: upstream wavu.wiki now reports startup i13~14.
+    assert steve_b1.startup == [StartupRange(min=13, max=14)]
     assert steve_b1.block == -14
     assert steve_b1.ch.frames == 61
     assert steve_b1.ch.effect == EffectKind.LAUNCHER

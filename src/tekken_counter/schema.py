@@ -109,6 +109,9 @@ class Move(BaseModel):
     hit: FrameAdvantage
     ch: FrameAdvantage
 
+    # recovery (whiff punish only; may be missing)
+    recovery: int | None = None
+
     # raw preserved fields (no dropped fields)
     raw_target: str | None = None
     raw_damage: str | None = None

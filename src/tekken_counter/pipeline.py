@@ -12,6 +12,7 @@ from tekken_counter.normalize import (
     parse_block,
     parse_damage,
     parse_hit_levels,
+    parse_recovery,
     parse_startup,
 )
 from tekken_counter.schema import Move
@@ -38,6 +39,7 @@ def _build_move(row: dict[str, Any]) -> Move:
         startup=row.get("linked_startup") or parse_startup(row.get("startup")),
         block=block,
         block_unblockable=block_unblockable,
+        recovery=parse_recovery(row.get("recv")),
         hit=hit,
         ch=ch,
         raw_target=row.get("target") or None,

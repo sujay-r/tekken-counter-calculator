@@ -316,6 +316,31 @@ def clean_notes(raw: str | None) -> str:
     return strip_wiki_markup(raw)
 
 
+def parse_recovery(raw: str | None) -> int | None:
+    """Parse the whiff recovery field.
+
+    Cargo stores values like ``r31``, ``r31?``, ``r24 FC``, ``FC``, ``r``.
+    The first integer after the ``r`` prefix is the whiff recovery in frames.
+    Stance-only tokens with no number are treated as having no numeric recovery.
+
+    Examples:
+        * ``r31`` -> ``31``
+        * ``r31?`` -> ``31``
+        * ``r24 FC`` -> ``24``
+        * ``FC`` -> ``None``
+        * ``r`` -> ``None``
+    """
+    if not raw:
+        return None
+    stripped = strip_wiki_markup(raw).strip()
+    # Drop leading "r" or "R" if present so the search starts after it.
+    body = re.sub(r"^[rR]\s*", "", stripped)
+    match = re.search(r"\d+", body)
+    if match:
+        return int(match.group())
+    return None
+
+
 def infer_safety(block: int | None) -> "SafetyKind | None":
     """Derive the safety tri-state from parsed block advantage."""
     from tekken_counter.schema import SafetyKind
